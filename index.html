@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Image Upscaler</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 50px auto; padding: 20px; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+    <h2>Perbesar Gambar dengan AI</h2>
+    <input type="text" id="imageUrl" placeholder="Masukkan URL Gambar di sini...">
+    <button onclick="prosesGambar()">Perbesar Gambar (2x)</button>
+    
+    <div id="status"></div>
+
+    <script>
+        async function prosesGambar() {
+            const imageUrl = document.getElementById('imageUrl').value;
+            const statusDiv = document.getElementById('status');
+            
+            if(!imageUrl) return alert('Masukkan URL gambar dulu!');
+            
+            statusDiv.innerText = "Mengirim gambar ke AI...";
+
+            try {
+                const res = await fetch('/api/upscale', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ imageUrl: imageUrl, style: "art", noise: "3", x2: "1" })
+                });
+
+                const data = await res.json();
+                
+                if(data.status === 'success') {
+                    statusDiv.innerText = `Sukses! ID Tugas Anda: ${data.tid}. Mengambil hasil...`;
+                    cekHasil(data.tid);
+                } else {
+                    statusDiv.innerText = "Gagal memproses gambar.";
+                }
+            } catch (err) {
+                statusDiv.innerText = "Terjadi kesalahan sistem.";
+            }
+        }
+
+        async function cekHasil(tid) {
+            const statusDiv = document.getElementById('status');
+            const interval = setInterval(async () => {
+                const res = await fetch(`https://bigjpg.com/api/task/${tid}`);
+                const data = await res.json();
+
+                if(data.status === 'success') {
+                    clearInterval(interval);
+                    statusDiv.innerHTML = `<h3>Selesai!</h3><a href="${data.url}" target="_blank">Klik di sini untuk Download Gambar</a>`;
+                } else {
+                    statusDiv.innerText = "AI sedang memperbesar gambar, mohon tunggu...";
+                }
+            }, 5000); 
+        }
+    </script>
+</body>
+  </html>
+
