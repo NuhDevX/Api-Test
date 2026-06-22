@@ -38,8 +38,8 @@
                     statusDiv.innerText = `Sukses! ID Tugas Anda: ${data.tid}. Mengambil hasil...`;
                     cekHasil(data.tid);
                 } else {
-                    statusDiv.innerText = "Gagal memproses gambar.";
-                }
+    statusDiv.innerText = "Gagal: " + JSON.stringify(data);
+}
             } catch (err) {
                 statusDiv.innerText = "Terjadi kesalahan sistem.";
             }
