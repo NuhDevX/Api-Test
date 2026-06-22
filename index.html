@@ -29,7 +29,8 @@
                 const res = await fetch('/api/upscale', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ imageUrl: imageUrl, style: "art", noise: "3", x2: "1" })
+                    body: JSON.stringify({ imageUrl: imageUrl, style: "art", noise: "1", x2: "1" })
+    
                 });
 
                 const data = await res.json();
