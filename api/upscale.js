@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "URL Gambar wajib diisi" });
   }
 
-  const apiKey = "f171dfa4507049a7a2b51551d7e710cf"; 
+  const apiKey = "4ef8dc096c3848709e22f3d270c71ab7"; 
 
   try {
     const response = await fetch("https://bigjpg.com/api/task/", {
